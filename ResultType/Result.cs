@@ -8,14 +8,33 @@ namespace ResultType
 {
     public class Result<T, E> : IResult<T, E>
     {
+        private readonly bool ok;
+        T value;
+        E error;
+
         public static Result<T, E> Ok(T value)
         {
-            throw new NotImplementedException();
+            return new Result<T, E>(value, default(E));
         }
 
-        public static Result<T, E> Error(E e)
+        public static Result<T, E> Error(E error)
         {
-            throw new NotImplementedException();
+            return new Result<T, E>(default(T), error);
+        }
+
+        private Result(T value, E error)
+        {
+            this.value = value;
+            this.error = error;
+
+            if (value == null)
+            {
+                ok = false;
+            }
+            else
+            {
+                ok = true;
+            }
         }
 
         public bool isError()
@@ -25,7 +44,7 @@ namespace ResultType
 
         public bool isOk()
         {
-            throw new NotImplementedException();
+            return ok;
         }
     }
 }
