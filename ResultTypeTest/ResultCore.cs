@@ -56,5 +56,13 @@ namespace ResultTypeTest
             var result = makeSimpleOk();
             Assert.AreEqual(SIMPLE_OKAY_VALUE, result.unwrap());
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(AttemptedToUnwrapErrorException))]
+        public void AnError_Unwrap_Throws()
+        {
+            var result = makeSimpleError();
+            result.unwrap();
+        }
     }
 }

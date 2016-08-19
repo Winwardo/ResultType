@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ResultType
 {
-    class AttemptedToUnwrapErrorException : Exception
+    public class AttemptedToUnwrapErrorException : Exception
     {
     }
 }
