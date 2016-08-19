@@ -49,7 +49,14 @@ namespace ResultType
 
         public T unwrap()
         {
-            throw new NotImplementedException();
+            if (ok)
+            {
+                return value;
+            }
+            else
+            {
+                throw new AttemptedToUnwrapErrorException();
+            }
         }
     }
 }
