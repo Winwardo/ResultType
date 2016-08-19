@@ -73,7 +73,14 @@ namespace ResultType
 
         public E unwrapError()
         {
-            throw new NotImplementedException();
+            if (ok)
+            {
+                throw new AttemptedToUnwrapErrorOfOkException();
+            }
+            else
+            {
+                return error;
+            }
         }
 
         public IResult<T, E> andThen(Func<T, IResult<T, E>> toCall)
