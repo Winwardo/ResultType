@@ -4,15 +4,16 @@ using ResultType;
 
 namespace ResultTypeTest
 {
+    using SimpleResult = Result<int, string>;
+
     [TestClass]
     public class ResultCore
     {
         [TestMethod]
-        public void TestMethod1()
+        public void AnOk_IsOk_ReturnsTrue()
         {
-            var r = new ResultType.Result<int, int>();
-            Assert.IsTrue(r.test());
+            var result = SimpleResult.Ok(5);
+            Assert.IsTrue(result.isOk());
         }
-
     }
 }
