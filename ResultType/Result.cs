@@ -58,5 +58,10 @@ namespace ResultType
                 throw new AttemptedToUnwrapErrorException();
             }
         }
+
+        public T unwrapOr(T other)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

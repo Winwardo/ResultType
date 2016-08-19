@@ -10,11 +10,17 @@ namespace ResultTypeTest
     public class ResultCore
     {
         private static int SIMPLE_OKAY_VALUE = 5;
+        private static int SIMPLE_OKAY_OTHER_VALUE = SIMPLE_OKAY_VALUE + 1;
         private static string SIMPLE_ERROR_MESSAGE = "some error";
 
         private SimpleResult makeSimpleOk()
         {
             return SimpleResult.Ok(SIMPLE_OKAY_VALUE);
+        }
+
+        private SimpleResult makeAnotherSimpleOk()
+        {
+            return SimpleResult.Ok(SIMPLE_OKAY_VALUE + 1);
         }
 
         private SimpleResult makeSimpleError()
@@ -63,6 +69,20 @@ namespace ResultTypeTest
         {
             var result = makeSimpleError();
             result.unwrap();
+        }
+
+        [TestMethod]
+        public void AnOk_UnwrapOr_ReturnsTheOkayValue()
+        {
+            var result = makeSimpleOk();
+            Assert.AreEqual(SIMPLE_OKAY_VALUE, result.unwrapOr(SIMPLE_OKAY_OTHER_VALUE));
+        }
+
+        [TestMethod]
+        public void AnError_UnwrapOr_ReturnsTheOtherValue()
+        {
+            var result = makeSimpleError();
+            Assert.AreEqual(SIMPLE_OKAY_OTHER_VALUE, result.unwrapOr(SIMPLE_OKAY_OTHER_VALUE));
         }
     }
 }

@@ -10,6 +10,7 @@ namespace ResultType
     {
         bool isOk();
         bool isError();
+        T unwrapOr(T other);
         T unwrap();
     }
 }
