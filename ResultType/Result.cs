@@ -61,7 +61,14 @@ namespace ResultType
 
         public T unwrapOr(T other)
         {
-            throw new NotImplementedException();
+            if (ok)
+            {
+                return value;
+            }
+            else
+            {
+                return other;
+            }
         }
     }
 }
