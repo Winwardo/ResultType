@@ -84,5 +84,20 @@ namespace ResultTypeTest
             var result = makeSimpleError();
             Assert.AreEqual(SIMPLE_OKAY_OTHER_VALUE, result.unwrapOr(SIMPLE_OKAY_OTHER_VALUE));
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(AttemptedToUnwrapErrorOfOkException))]
+        public void AnOk_UnwrapError_Throws()
+        {
+            var result = makeSimpleOk();
+            result.unwrapError();
+        }
+
+        [TestMethod]
+        public void AnError_UnwrapError_ReturnsTheError()
+        {
+            var result = makeSimpleError();
+            Assert.AreEqual(SIMPLE_ERROR_MESSAGE, result.unwrapError());
+        }
     }
 }
