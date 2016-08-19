@@ -9,32 +9,52 @@ namespace ResultTypeTest
     [TestClass]
     public class ResultCore
     {
+        private static int SIMPLE_OKAY_VALUE = 5;
+        private static string SIMPLE_ERROR_MESSAGE = "some error";
+
+        private SimpleResult makeSimpleOk()
+        {
+            return SimpleResult.Ok(SIMPLE_OKAY_VALUE);
+        }
+
+        private SimpleResult makeSimpleError()
+        {
+            return SimpleResult.Error(SIMPLE_ERROR_MESSAGE);
+        }
+
         [TestMethod]
         public void AnOk_IsOk_ReturnsTrue()
         {
-            var result = SimpleResult.Ok(5);
+            var result = makeSimpleOk();
             Assert.IsTrue(result.isOk());
         }
 
         [TestMethod]
         public void AnError_IsOk_ReturnsFalse()
         {
-            var result = SimpleResult.Error("error");
+            var result = makeSimpleError();
             Assert.IsFalse(result.isOk());
         }
 
         [TestMethod]
         public void AnOk_IsError_ReturnsFalse()
         {
-            var result = SimpleResult.Ok(5);
+            var result = makeSimpleOk();
             Assert.IsFalse(result.isError());
         }
 
         [TestMethod]
         public void AnError_IsError_ReturnsTrue()
         {
-            var result = SimpleResult.Error("error");
+            var result = makeSimpleError();
             Assert.IsTrue(result.isError());
+        }
+
+        [TestMethod]
+        public void AnOk_Unwrap_UnwrapsFine()
+        {
+            var result = makeSimpleOk();
+            Assert.AreEqual(SIMPLE_OKAY_VALUE, result.unwrap());
         }
     }
 }

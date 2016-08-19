@@ -46,5 +46,10 @@ namespace ResultType
         {
             return ok;
         }
+
+        public T unwrap()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
