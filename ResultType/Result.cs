@@ -27,7 +27,7 @@ namespace ResultType
             this.value = value;
             this.error = error;
 
-            if (value == null)
+            if (value == null || error != null)
             {
                 ok = false;
             }
@@ -39,7 +39,7 @@ namespace ResultType
 
         public bool isError()
         {
-            throw new NotImplementedException();
+            return !ok;
         }
 
         public bool isOk()

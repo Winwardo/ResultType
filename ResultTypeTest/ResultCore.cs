@@ -34,7 +34,7 @@ namespace ResultTypeTest
         public void AnError_IsError_ReturnsTrue()
         {
             var result = SimpleResult.Error("error");
-            Assert.IsTrue(result.isOk());
+            Assert.IsTrue(result.isError());
         }
     }
 }
