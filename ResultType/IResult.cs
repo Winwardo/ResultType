@@ -6,11 +6,16 @@ using System.Threading.Tasks;
 
 namespace ResultType
 {
-    interface IResult<T, Error>
+    public interface IResult<T, Error>
     {
         bool isOk();
         bool isError();
+
         T unwrapOr(T other);
+        Error unwrapError();
+
+        IResult<T, Error> andThen(Func<T, IResult<T, Error>> toCall);
+
         T unwrap();
     }
 }

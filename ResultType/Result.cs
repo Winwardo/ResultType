@@ -70,5 +70,15 @@ namespace ResultType
                 return other;
             }
         }
+
+        public E unwrapError()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IResult<T, E> andThen(Func<T, IResult<T, E>> toCall)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
