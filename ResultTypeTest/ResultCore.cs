@@ -247,5 +247,41 @@ namespace ResultTypeTest
             var result = Result<string, Object>.ErrorOrNull(null);
             Assert.AreEqual(null, result.UnwrapErrorUnsafe());
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(AttemptedToUnwrapUncheckedResultException))]
+        public void AnUncheckedResult_Unwrap_Throws()
+        {
+            var result = MakeSimpleOk();
+            result.Unwrap();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(AttemptedToUnwrapUncheckedResultException))]
+        public void AnUncheckedResult_UnwrapError_Throws()
+        {
+            var result = MakeSimpleOk();
+            result.UnwrapError();
+        }
+
+        [TestMethod]
+        public void AnIsOkCheckedOkResult_Unwrap_ReturnsTheValue()
+        {
+            var result = MakeSimpleOk();
+            if (result.IsOk())
+            {
+                Assert.AreEqual(SIMPLE_OKAY_VALUE_1, result.Unwrap());
+            }
+        }
+
+        [TestMethod]
+        public void AnIsErrorCheckedOkResult_Unwrap_ReturnsTheValue()
+        {
+            var result = MakeSimpleOk();
+            if (!result.IsError())
+            {
+                Assert.AreEqual(SIMPLE_OKAY_VALUE_1, result.Unwrap());
+            }
+        }
     }
 }

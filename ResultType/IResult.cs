@@ -11,12 +11,14 @@ namespace ResultType
         bool IsOk();
         bool IsError();
 
+        T Unwrap();
         T UnwrapOr(T other);
-        Error UnwrapErrorUnsafe();
+        Error UnwrapError();
 
         IResult<T, Error> AndThen(Func<T, IResult<T, Error>> ToCall);
         IResult<U, Error> Map<U>(Func<T, IResult<U, Error>> ToCall);
 
         T UnwrapUnsafe();
+        Error UnwrapErrorUnsafe();
     }
 }

@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AttemptedToUnwrapUncheckedResultException.cs" />
     <Compile Include="ResultWasGivenNullException.cs" />
     <Compile Include="AttemptedToUnwrapErrorOfOkException.cs" />
     <Compile Include="AttemptedToUnwrapErrorException.cs" />

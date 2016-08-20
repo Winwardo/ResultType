@@ -9,6 +9,7 @@ namespace ResultType
     public class Result<T, E> : IResult<T, E>
     {
         private readonly bool ok;
+        private bool hasBeenChecked = false;
         T value;
         E error;
 
@@ -62,6 +63,7 @@ namespace ResultType
         {
             return ok;
         }
+
 
         public T UnwrapUnsafe()
         {
@@ -121,6 +123,16 @@ namespace ResultType
             {
                 return Result<U, E>.Error(error);
             }
+        }
+
+        public T Unwrap()
+        {
+            throw new NotImplementedException();
+        }
+
+        public E UnwrapError()
+        {
+            throw new NotImplementedException();
         }
     }
 }
