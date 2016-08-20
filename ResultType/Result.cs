@@ -195,7 +195,14 @@ namespace ResultType
 
         public IResult<U, E> And<U>(IResult<U, E> other)
         {
-            throw new NotImplementedException();
+            if (ok)
+            {
+                return other;
+            }
+            else
+            {
+                return Result<U, E>.Error(error);
+            }
         }
 
         public IResult<U, E> Or<U>(IResult<U, E> other)
