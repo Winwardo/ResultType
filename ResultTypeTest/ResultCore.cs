@@ -47,19 +47,6 @@ namespace ResultTypeTest
             return SimpleIntResult.Error(SIMPLE_ERROR_MESSAGE_2);
         }
 
-        {
-        }
-
-        {
-        }
-
-        {
-            public string message;
-        }
-
-        {
-        }
-
         // -------------------------------------------------------------
 
         [TestMethod]
@@ -198,6 +185,22 @@ namespace ResultTypeTest
         {
             var result = MakeSimpleOk();
             var mappedResult = result.Map<string>((value) => MakeSimpleStringOk());
+            Assert.AreEqual(SIMPLE_OKAY_STRING_1, mappedResult.Unwrap());
+        }
+
+        [TestMethod]
+        public void AnOk_Mapped_ToTheSameType_SharesTypeSignature()
+        {
+            IResult<int, string> result = MakeSimpleOk();
+            IResult<int, string> mappedResult = result.Map(value => MakeSimpleOk2());
+            Assert.AreEqual(SIMPLE_OKAY_VALUE_2, mappedResult.Unwrap());
+        }
+
+        [TestMethod]
+        public void AnOk_MappedToANewType_HasTheNewTypeSignature()
+        {
+            IResult<int, string> result = MakeSimpleOk();
+            IResult<string, string> mappedResult = result.Map<string>(value => MakeSimpleStringOk());
             Assert.AreEqual(SIMPLE_OKAY_STRING_1, mappedResult.Unwrap());
         }
     }
