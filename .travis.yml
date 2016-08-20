@@ -2,7 +2,7 @@ language: csharp
 solution: ResultType.sln
 install:
   - nuget restore ResultType.sln
-  - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
+  - nuget install NUnit.Runners -Version 3.4.1 -OutputDirectory testrunner
 script:
   - xbuild /p:Configuration=Release ResultType.sln
-  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./ResultTypeTests/bin/Release/ResultTypeTests.dll
+  - mono ./testrunner/NUnit.Runners.3.4.1/tools/nunit-console.exe ./ResultTypeTests/bin/Release/ResultTypeTests.dll
