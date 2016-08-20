@@ -99,5 +99,13 @@ namespace ResultTypeTest
             var result = makeSimpleError();
             Assert.AreEqual(SIMPLE_ERROR_MESSAGE, result.unwrapError());
         }
+
+        [TestMethod]
+        public void AnOk_AndThen_WithOk_ReturnsNewOk()
+        {
+            var result = makeSimpleOk();
+            var andThennedResult = result.andThen((value) => makeAnotherSimpleOk());
+            Assert.AreEqual(SIMPLE_OKAY_OTHER_VALUE, andThennedResult.unwrap());
+        }
     }
 }
