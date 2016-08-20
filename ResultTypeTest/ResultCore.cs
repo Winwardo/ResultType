@@ -123,6 +123,15 @@ namespace ResultTypeTest
         }
 
         [TestMethod]
+        public void AnOk_AndThen_WithTheIdentityFunction_ReturnsTheOriginalOk()
+        {
+            var result = makeSimpleOk();
+            var andThennedResult = result.andThen((value) => SimpleResult.Ok(value));
+            Assert.AreEqual(result.unwrap(), andThennedResult.unwrap());
+            Assert.AreEqual(SIMPLE_OKAY_VALUE_1, andThennedResult.unwrap());
+        }
+
+        [TestMethod]
         public void AnError_AndThen_WithOk_ReturnsError()
         {
             var result = makeSimpleError();
