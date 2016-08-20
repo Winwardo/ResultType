@@ -197,7 +197,14 @@ namespace ResultType
         {
             if (ok)
             {
-                return other;
+                if (other.IsOk())
+                {
+                    return Result<U, E>.Ok(other.Unwrap());
+                }
+                else
+                {
+                    return Result<U, E>.Error(other.UnwrapError());
+                }
             }
             else
             {
@@ -205,9 +212,23 @@ namespace ResultType
             }
         }
 
-        public IResult<U, E> Or<U>(IResult<U, E> other)
+        public IResult<T, F> Or<F>(IResult<T, F> other)
         {
-            throw new NotImplementedException();
+            if (ok)
+            {
+                return Result<T, F>.Ok(value);
+            }
+            else
+            {
+                if (other.IsOk())
+                {
+                    return Result<T, F>.Ok(other.Unwrap());
+                }
+                else
+                {
+                    return Result<T, F>.Error(other.UnwrapError());
+                }
+            }
         }
     }
 }

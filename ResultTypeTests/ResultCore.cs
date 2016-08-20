@@ -47,6 +47,11 @@ namespace ResultTypeTest
             return SimpleIntResult.Error(SIMPLE_ERROR_MESSAGE_2);
         }
 
+        private SimpleStringResult MakeSimpleStringError()
+        {
+            return SimpleStringResult.Error(SIMPLE_ERROR_MESSAGE_1);
+        }
+
         // -------------------------------------------------------------
 
         [Test]
@@ -359,8 +364,8 @@ namespace ResultTypeTest
         [Test]
         public void AnOk_And_AnOk_ContainsTheSecondOk()
         {
-            var result = MakeSimpleOk();
-            var other = MakeSimpleStringOk();
+            SimpleIntResult result = MakeSimpleOk();
+            SimpleStringResult other = MakeSimpleStringOk();
             var andResult = result.And(other);
             Assert.AreEqual(other.UnwrapUnsafe(), andResult.UnwrapUnsafe());
         }
@@ -368,8 +373,8 @@ namespace ResultTypeTest
         [Test]
         public void AnOk_And_AnError_ContainsTheError()
         {
-            var result = MakeSimpleOk();
-            var other = MakeSimpleError();
+            SimpleIntResult result = MakeSimpleOk();
+            SimpleStringResult other = MakeSimpleStringError();
             var andResult = result.And(other);
             Assert.AreEqual(other.UnwrapErrorUnsafe(), andResult.UnwrapErrorUnsafe());
         }
@@ -377,17 +382,17 @@ namespace ResultTypeTest
         [Test]
         public void AnError_And_AnOk_ContainsTheError()
         {
-            var result = MakeSimpleError();
-            var other = MakeSimpleStringOk();
+            SimpleIntResult result = MakeSimpleError();
+            SimpleStringResult other = MakeSimpleStringOk();
             var andResult = result.And(other);
-            Assert.AreEqual(other.UnwrapErrorUnsafe(), andResult.UnwrapErrorUnsafe());
+            Assert.AreEqual(result.UnwrapErrorUnsafe(), andResult.UnwrapErrorUnsafe());
         }
 
         [Test]
         public void AnError_And_AnError_ContainsTheFirstError()
         {
-            var result = MakeSimpleError();
-            var other = MakeSimpleError2();
+            SimpleIntResult result = MakeSimpleError();
+            SimpleStringResult other = MakeSimpleStringError();
             var andResult = result.And(other);
             Assert.AreEqual(result.UnwrapErrorUnsafe(), andResult.UnwrapErrorUnsafe());
         }
@@ -395,36 +400,36 @@ namespace ResultTypeTest
         [Test]
         public void AnOk_Or_AnOk_ContainsTheFirstOk()
         {
-            var result = MakeSimpleOk();
-            var other = MakeSimpleStringOk();
-            var orResult = result.And(other);
+            SimpleIntResult result = MakeSimpleOk();
+            SimpleIntResult other = MakeSimpleOk2();
+            var orResult = result.Or(other);
             Assert.AreEqual(result.UnwrapUnsafe(), orResult.UnwrapUnsafe());
         }
 
         [Test]
         public void AnOk_Or_AnError_ContainsTheOk()
         {
-            var result = MakeSimpleOk();
-            var other = MakeSimpleError();
-            var orResult = result.And(other);
+            SimpleIntResult result = MakeSimpleOk();
+            SimpleIntResult other = MakeSimpleOk2();
+            var orResult = result.Or(other);
             Assert.AreEqual(result.UnwrapUnsafe(), orResult.UnwrapUnsafe());
         }
 
         [Test]
         public void AnError_Or_AnOk_ContainsTheOk()
         {
-            var result = MakeSimpleError();
-            var other = MakeSimpleStringOk();
-            var orResult = result.And(other);
+            SimpleIntResult result = MakeSimpleError();
+            SimpleIntResult other = MakeSimpleOk2();
+            var orResult = result.Or(other);
             Assert.AreEqual(other.UnwrapUnsafe(), orResult.UnwrapUnsafe());
         }
 
         [Test]
         public void AnError_Or_AnError_ContainsTheSecondError()
         {
-            var result = MakeSimpleError();
-            var other = MakeSimpleError2();
-            var orResult = result.And(other);
+            SimpleIntResult result = MakeSimpleError();
+            SimpleIntResult other = MakeSimpleError2();
+            var orResult = result.Or(other);
             Assert.AreEqual(other.UnwrapErrorUnsafe(), orResult.UnwrapErrorUnsafe());
         }
     }
