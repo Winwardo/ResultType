@@ -15,8 +15,8 @@ namespace ResultType
         T UnwrapOr(T other);
         Error UnwrapError();
 
-        IResult<U, Error> AndThen<U>(Func<T, IResult<U, Error>> ToCall);
         IResult<U, Error> Map<U>(Func<T, IResult<U, Error>> ToCall);
+        IResult<U, Error> AndThen<U>(Func<T, IResult<U, Error>> ToCall);
         List<T> ToList();
 
         T UnwrapUnsafe();

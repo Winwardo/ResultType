@@ -146,6 +146,13 @@ namespace ResultTypeTest
         }
 
         [Test]
+        public void AnOk_AndThenned_ToANewType_HasTheNewTypeSignature()
+        {
+            IResult<int, string> result = MakeSimpleOk();
+            IResult<string, string> mappedResult = result.AndThen<string>((value) => MakeSimpleStringOk());
+        }
+
+        [Test]
         public void AnError_AndThen_WithOk_ReturnsError()
         {
             var result = MakeSimpleError();
