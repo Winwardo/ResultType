@@ -47,6 +47,21 @@ namespace ResultTypeTest
             return SimpleIntResult.Error(SIMPLE_ERROR_MESSAGE_2);
         }
 
+        {
+        }
+
+        {
+        }
+
+        {
+            public string message;
+        }
+
+        {
+        }
+
+        // -------------------------------------------------------------
+
         [TestMethod]
         public void AnOk_IsOk_ReturnsTrue()
         {
