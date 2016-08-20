@@ -85,7 +85,14 @@ namespace ResultType
 
         public IResult<T, E> andThen(Func<T, IResult<T, E>> toCall)
         {
-            throw new NotImplementedException();
+            if (ok)
+            {
+                return toCall(value);
+            }
+            else
+            {
+                return Result<T, E>.Error(error);
+            }
         }
     }
 }
