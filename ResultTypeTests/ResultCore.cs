@@ -4,7 +4,6 @@ using ResultType;
 namespace ResultTypeTest
 {
     using NUnit.Framework;
-    using NUnit.Common;
     using SimpleIntResult = Result<int, string>;
     using SimpleStringResult = Result<string, string>;
 
