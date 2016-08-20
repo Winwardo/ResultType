@@ -189,7 +189,7 @@ namespace ResultTypeTest
         }
 
         [TestMethod]
-        public void AnOk_Mapped_ToTheSameType_SharesTypeSignature()
+        public void AnOk_MappedToTheSameOkType_SharesTypeSignature()
         {
             IResult<int, string> result = MakeSimpleOk();
             IResult<int, string> mappedResult = result.Map(value => MakeSimpleOk2());
@@ -197,11 +197,27 @@ namespace ResultTypeTest
         }
 
         [TestMethod]
-        public void AnOk_MappedToANewType_HasTheNewTypeSignature()
+        public void AnOk_MappedToANewOkType_HasTheNewTypeSignature()
         {
             IResult<int, string> result = MakeSimpleOk();
             IResult<string, string> mappedResult = result.Map<string>(value => MakeSimpleStringOk());
             Assert.AreEqual(SIMPLE_OKAY_STRING_1, mappedResult.Unwrap());
+        }
+
+        [TestMethod]
+        public void AnError_MappedToTheSameOkType_WithOk_ContainsTheOriginalError()
+        {
+            IResult<int, string> result = MakeSimpleError();
+            IResult<int, string> mappedResult = result.Map(value => MakeSimpleOk());
+            Assert.AreEqual(SIMPLE_ERROR_MESSAGE_1, mappedResult.Unwrap());
+        }
+
+        [TestMethod]
+        public void AnError_MappedToTheSameOkType_WithNewError_ContainsTheOriginalError()
+        {
+            IResult<int, string> result = MakeSimpleError();
+            IResult<int, string> mappedResult = result.Map(value => MakeSimpleError2());
+            Assert.AreEqual(SIMPLE_ERROR_MESSAGE_1, mappedResult.Unwrap());
         }
     }
 }
