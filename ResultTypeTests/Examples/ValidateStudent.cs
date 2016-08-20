@@ -31,36 +31,22 @@ namespace Students
         public static StudentIResult MakeStudent(PotentialStudent student)
         {
             return PotentialStudentResult.Ok(student)
-                .AndThen(validateStudentAge)
-                .AndThen(validateStudentMark)
+                .IfThenElse(isStudentOfAge, StudentError.NotOldEnough)
+                .IfThenElse(isMarkHighEnough, StudentError.MarkIsTooLow)
                 .Map(value => new Student(value));
         }
 
-        private static PotentialStudentIResult validateStudentAge(PotentialStudent student)
+        private static bool isStudentOfAge(AStudent student)
         {
-            if (student.age >= 18)
-            {
-                return PotentialStudentResult.Ok(student);
-            }
-            else
-            {
-                return PotentialStudentResult.Error(StudentError.NotOldEnough);
-            }
+            return student.age >= 18;
         }
 
-        private static PotentialStudentIResult validateStudentMark(PotentialStudent student)
+        private static bool isMarkHighEnough(AStudent student)
         {
-            if (student.mark >= 50)
-            {
-                return PotentialStudentResult.Ok(student);
-            }
-            else
-            {
-                return PotentialStudentResult.Error(StudentError.MarkIsTooLow);
-            }
+            return student.mark >= 50;
         }
 
-        private Student(PotentialStudent student)
+        private Student(AStudent student)
         {
             this.age = student.age;
             this.mark = student.mark;
