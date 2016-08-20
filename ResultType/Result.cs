@@ -14,12 +14,26 @@ namespace ResultType
 
         public static Result<T, E> Ok(T value)
         {
-            return new Result<T, E>(value, default(E));
+            if (value != null)
+            {
+                return new Result<T, E>(value, default(E));
+            }
+            else
+            {
+                throw new ResultWasGivenNullException();
+            }
         }
 
         public static Result<T, E> Error(E error)
         {
-            return new Result<T, E>(default(T), error);
+            if (error != null)
+            {
+                return new Result<T, E>(default(T), error);
+            }
+            else
+            {
+                throw new ResultWasGivenNullException();
+            }
         }
 
         private Result(T value, E error)
