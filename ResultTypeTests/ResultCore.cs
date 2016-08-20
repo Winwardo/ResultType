@@ -360,32 +360,72 @@ namespace ResultTypeTest
         public void AnOk_And_AnOk_ContainsTheSecondOk()
         {
             var result = MakeSimpleOk();
-            var andResult = result.And(MakeSimpleStringOk());
-            Assert.AreEqual(SIMPLE_OKAY_STRING_1, andResult.UnwrapUnsafe());
+            var other = MakeSimpleStringOk();
+            var andResult = result.And(other);
+            Assert.AreEqual(other.UnwrapUnsafe(), andResult.UnwrapUnsafe());
         }
 
         [Test]
         public void AnOk_And_AnError_ContainsTheError()
         {
             var result = MakeSimpleOk();
-            var andResult = result.And(MakeSimpleError());
-            Assert.AreEqual(SIMPLE_ERROR_MESSAGE_1, andResult.UnwrapErrorUnsafe());
+            var other = MakeSimpleError();
+            var andResult = result.And(other);
+            Assert.AreEqual(other.UnwrapErrorUnsafe(), andResult.UnwrapErrorUnsafe());
         }
 
         [Test]
         public void AnError_And_AnOk_ContainsTheError()
         {
             var result = MakeSimpleError();
-            var andResult = result.And(MakeSimpleStringOk());
-            Assert.AreEqual(SIMPLE_ERROR_MESSAGE_1, andResult.UnwrapErrorUnsafe());
+            var other = MakeSimpleStringOk();
+            var andResult = result.And(other);
+            Assert.AreEqual(other.UnwrapErrorUnsafe(), andResult.UnwrapErrorUnsafe());
         }
 
         [Test]
         public void AnError_And_AnError_ContainsTheFirstError()
         {
             var result = MakeSimpleError();
-            var andResult = result.And(MakeSimpleError2());
-            Assert.AreEqual(SIMPLE_ERROR_MESSAGE_1, andResult.UnwrapErrorUnsafe());
+            var other = MakeSimpleError2();
+            var andResult = result.And(other);
+            Assert.AreEqual(result.UnwrapErrorUnsafe(), andResult.UnwrapErrorUnsafe());
+        }
+
+        [Test]
+        public void AnOk_Or_AnOk_ContainsTheFirstOk()
+        {
+            var result = MakeSimpleOk();
+            var other = MakeSimpleStringOk();
+            var orResult = result.And(other);
+            Assert.AreEqual(result.UnwrapUnsafe(), orResult.UnwrapUnsafe());
+        }
+
+        [Test]
+        public void AnOk_Or_AnError_ContainsTheOk()
+        {
+            var result = MakeSimpleOk();
+            var other = MakeSimpleError();
+            var orResult = result.And(other);
+            Assert.AreEqual(result.UnwrapUnsafe(), orResult.UnwrapUnsafe());
+        }
+
+        [Test]
+        public void AnError_Or_AnOk_ContainsTheOk()
+        {
+            var result = MakeSimpleError();
+            var other = MakeSimpleStringOk();
+            var orResult = result.And(other);
+            Assert.AreEqual(other.UnwrapUnsafe(), orResult.UnwrapUnsafe());
+        }
+
+        [Test]
+        public void AnError_Or_AnError_ContainsTheSecondError()
+        {
+            var result = MakeSimpleError();
+            var other = MakeSimpleError2();
+            var orResult = result.And(other);
+            Assert.AreEqual(other.UnwrapErrorUnsafe(), orResult.UnwrapErrorUnsafe());
         }
     }
 }
