@@ -7,7 +7,6 @@ using ResultType;
 
 namespace Students
 {
-    using PotentialStudentIResult = IResult<Students.PotentialStudent, Students.StudentError>;
     using PotentialStudentResult = Result<Students.PotentialStudent, Students.StudentError>;
     using StudentIResult = IResult<Students.Student, Students.StudentError>;
 
@@ -82,7 +81,7 @@ namespace ResultTypeTests.Examples
             if (validatedTopherResult.IsOk())
             {
                 Student validatedTopher = validatedTopherResult.Unwrap();
-                // Student must be valid
+                // Student is definitely valid
             }
             else
             {
