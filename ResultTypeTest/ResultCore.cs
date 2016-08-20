@@ -29,6 +29,11 @@ namespace ResultTypeTest
             return SimpleResult.Error(SIMPLE_ERROR_MESSAGE);
         }
 
+        private SimpleResult makeAnotherSimpleError()
+        {
+            return SimpleResult.Error(SIMPLE_OTHER_ERROR_MESSAGE);
+        }
+
         [TestMethod]
         public void AnOk_IsOk_ReturnsTrue()
         {
@@ -115,6 +120,40 @@ namespace ResultTypeTest
             var result = makeSimpleOk();
             var andThennedResult = result.andThen((value) => makeSimpleError());
             Assert.AreEqual(SIMPLE_ERROR_MESSAGE, andThennedResult.unwrapError());
+        }
+
+        [TestMethod]
+        public void AnError_AndThen_WithOk_ReturnsError()
+        {
+            var result = makeSimpleError();
+            var andThennedResult = result.andThen((value) => makeAnotherSimpleOk());
+            Assert.AreEqual(SIMPLE_ERROR_MESSAGE, andThennedResult.unwrapError());
+        }
+
+        [TestMethod]
+        public void AnError_AndThen_WithAnotherError_ReturnsTheFirstError()
+        {
+            var result = makeSimpleError();
+            var andThennedResult = result.andThen((value) => makeAnotherSimpleError());
+            Assert.AreEqual(SIMPLE_ERROR_MESSAGE, andThennedResult.unwrapError());
+        }
+
+        [TestMethod]
+        public void AnOk_AndThen_EvenWithAnOk_ExecutesTheAndThenFunction()
+        {
+            var capturedValue = 0;
+            var result = makeSimpleOk();
+            var andThennedResult = result.andThen((value) => { capturedValue++; return makeAnotherSimpleOk(); });
+            Assert.AreEqual(1, capturedValue);
+        }
+
+        [TestMethod]
+        public void AnError_AndThen_EvenWithAnOk_DoesNotExecuteTheAndThenFunction()
+        {
+            var capturedValue = 0;
+            var result = makeSimpleError();
+            var andThennedResult = result.andThen((value) => { capturedValue++; return makeAnotherSimpleOk(); });
+            Assert.AreEqual(0, capturedValue);
         }
     }
 }
