@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ResultType
 {
@@ -18,6 +15,8 @@ namespace ResultType
         IResult<U, Error> Map<U>(Func<T, U> ToCall);
         IResult<U, Error> AndThen<U>(Func<T, IResult<U, Error>> ToCall);
         List<T> ToList();
+
+        IResult<T, Error> IfThenElse(Predicate<T> predicate, Error error);
 
         T UnwrapUnsafe();
         Error UnwrapErrorUnsafe();

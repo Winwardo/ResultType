@@ -309,5 +309,13 @@ namespace ResultTypeTest
             var asList = result.ToList();
             Assert.AreEqual(0, asList.Count);
         }
+
+        [Test]
+        public void AnOk_IfThenElse_PredicateIsTrue_ContainsTheOkValue()
+        {
+            var result = MakeSimpleOk();
+            var afterPred = result.IfThenElse((value) => true, SIMPLE_ERROR_MESSAGE_1);
+            Assert.AreEqual(result.UnwrapUnsafe(), afterPred.UnwrapUnsafe());
+        }
     }
 }

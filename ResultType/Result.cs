@@ -161,5 +161,10 @@ namespace ResultType
                 return new List<T>();
             }
         }
+
+        public IResult<T, E> IfThenElse(Predicate<T> predicate, E error)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
