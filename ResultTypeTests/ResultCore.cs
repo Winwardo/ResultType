@@ -190,15 +190,23 @@ namespace ResultTypeTest
         public void AnOk_Mapped_ToAnOkOfNewType_ReturnsTheNewOk()
         {
             var result = MakeSimpleOk();
-            var mappedResult = result.Map<string>((value) => MakeSimpleStringOk());
+            var mappedResult = result.Map<string>((value) => SIMPLE_OKAY_STRING_1);
             Assert.AreEqual(SIMPLE_OKAY_STRING_1, mappedResult.UnwrapUnsafe());
+        }
+
+        [Test]
+        public void AnOk_Mapped_WithTheIdentityFunction_ReturnsTheNewOk()
+        {
+            var result = MakeSimpleOk();
+            var mappedResult = result.Map(value => value);
+            Assert.AreEqual(result.UnwrapUnsafe(), mappedResult.UnwrapUnsafe());
         }
 
         [Test]
         public void AnOk_MappedToTheSameOkType_SharesTypeSignature()
         {
             IResult<int, string> result = MakeSimpleOk();
-            IResult<int, string> mappedResult = result.Map(value => MakeSimpleOk2());
+            IResult<int, string> mappedResult = result.Map(value => SIMPLE_OKAY_VALUE_2);
             Assert.AreEqual(SIMPLE_OKAY_VALUE_2, mappedResult.UnwrapUnsafe());
         }
 
@@ -206,7 +214,7 @@ namespace ResultTypeTest
         public void AnOk_MappedToANewOkType_HasTheNewTypeSignature()
         {
             IResult<int, string> result = MakeSimpleOk();
-            IResult<string, string> mappedResult = result.Map<string>(value => MakeSimpleStringOk());
+            IResult<string, string> mappedResult = result.Map<string>(value => SIMPLE_OKAY_STRING_1);
             Assert.AreEqual(SIMPLE_OKAY_STRING_1, mappedResult.UnwrapUnsafe());
         }
 
@@ -214,15 +222,15 @@ namespace ResultTypeTest
         public void AnError_MappedToTheSameOkType_WithOk_ContainsTheOriginalError()
         {
             IResult<int, string> result = MakeSimpleError();
-            IResult<int, string> mappedResult = result.Map(value => MakeSimpleOk());
+            IResult<int, string> mappedResult = result.Map(value => SIMPLE_OKAY_VALUE_1);
             Assert.AreEqual(SIMPLE_ERROR_MESSAGE_1, mappedResult.UnwrapErrorUnsafe());
         }
 
         [Test]
-        public void AnError_MappedToTheSameOkType_WithNewError_ContainsTheOriginalError()
+        public void AnError_MappedToTheSomeOkType_AndThenned_WithNewError_ContainsTheOriginalError()
         {
             IResult<int, string> result = MakeSimpleError();
-            IResult<int, string> mappedResult = result.Map(value => MakeSimpleError2());
+            IResult<int, string> mappedResult = result.Map(value => SIMPLE_OKAY_VALUE_1).AndThen(value => MakeSimpleError2());
             Assert.AreEqual(SIMPLE_ERROR_MESSAGE_1, mappedResult.UnwrapErrorUnsafe());
         }
 

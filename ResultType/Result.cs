@@ -114,11 +114,11 @@ namespace ResultType
             }
         }
 
-        public IResult<U, E> Map<U>(Func<T, IResult<U, E>> ToCall)
+        public IResult<U, E> Map<U>(Func<T, U> ToCall)
         {
             if (ok)
             {
-                return ToCall(value);
+                return Result<U, E>.Ok(ToCall(value));
             }
             else
             {
