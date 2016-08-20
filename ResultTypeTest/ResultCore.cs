@@ -219,5 +219,19 @@ namespace ResultTypeTest
             IResult<int, string> mappedResult = result.Map(value => MakeSimpleError2());
             Assert.AreEqual(SIMPLE_ERROR_MESSAGE_1, mappedResult.UnwrapError());
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(ResultWasGivenNullException))]
+        public void ResultOk_PassedANull_Throws()
+        {
+            Result<Object, string>.Ok(null);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ResultWasGivenNullException))]
+        public void ResultError_PassedANull_Throws()
+        {
+            Result<Object, string>.Error(null);
+        }
     }
 }
