@@ -102,7 +102,7 @@ namespace ResultType
             }
         }
 
-        public IResult<T, E> AndThen(Func<T, IResult<T, E>> ToCall)
+        public IResult<U, E> AndThen<U>(Func<T, IResult<U, E>> ToCall)
         {
             if (ok)
             {
@@ -110,7 +110,7 @@ namespace ResultType
             }
             else
             {
-                return Result<T, E>.Error(error);
+                return Result<U, E>.Error(error);
             }
         }
 
