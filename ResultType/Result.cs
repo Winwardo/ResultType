@@ -56,11 +56,12 @@ namespace ResultType
 
         public bool IsError()
         {
-            return !ok;
+            return !IsOk();
         }
 
         public bool IsOk()
         {
+            hasBeenChecked = true;
             return ok;
         }
 
@@ -127,12 +128,26 @@ namespace ResultType
 
         public T Unwrap()
         {
-            throw new NotImplementedException();
+            if (hasBeenChecked)
+            {
+                return UnwrapUnsafe();
+            }
+            else
+            {
+                throw new AttemptedToUnwrapUncheckedResultException();
+            }
         }
 
         public E UnwrapError()
         {
-            throw new NotImplementedException();
+            if (hasBeenChecked)
+            {
+                return UnwrapErrorUnsafe();
+            }
+            else
+            {
+                throw new AttemptedToUnwrapUncheckedResultException();
+            }
         }
     }
 }
