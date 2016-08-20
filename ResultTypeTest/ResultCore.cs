@@ -12,6 +12,7 @@ namespace ResultTypeTest
         private static int SIMPLE_OKAY_VALUE = 5;
         private static int SIMPLE_OKAY_OTHER_VALUE = SIMPLE_OKAY_VALUE + 1;
         private static string SIMPLE_ERROR_MESSAGE = "some error";
+        private static string SIMPLE_OTHER_ERROR_MESSAGE = "some other error";
 
         private SimpleResult makeSimpleOk()
         {
@@ -106,6 +107,14 @@ namespace ResultTypeTest
             var result = makeSimpleOk();
             var andThennedResult = result.andThen((value) => makeAnotherSimpleOk());
             Assert.AreEqual(SIMPLE_OKAY_OTHER_VALUE, andThennedResult.unwrap());
+        }
+
+        [TestMethod]
+        public void AnOk_AndThen_WithError_ReturnsNewError()
+        {
+            var result = makeSimpleOk();
+            var andThennedResult = result.andThen((value) => makeSimpleError());
+            Assert.AreEqual(SIMPLE_ERROR_MESSAGE, andThennedResult.unwrapError());
         }
     }
 }
