@@ -181,5 +181,9 @@ namespace ResultType
             }
         }
 
+        public T Expect(string message)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

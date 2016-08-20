@@ -10,6 +10,7 @@ namespace ResultType
 
         T Unwrap();
         T UnwrapOr(T other);
+        T Expect(string message);
         Error UnwrapError();
 
         IResult<U, Error> Map<U>(Func<T, U> ToCall);

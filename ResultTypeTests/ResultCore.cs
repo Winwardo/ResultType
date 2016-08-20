@@ -341,5 +341,19 @@ namespace ResultTypeTest
             var afterPred = result.IfThenElse((value) => false, SIMPLE_ERROR_MESSAGE_2);
             Assert.AreEqual(SIMPLE_ERROR_MESSAGE_1, afterPred.UnwrapErrorUnsafe());
         }
+
+        [Test]
+        public void AnOk_Expect_ReturnsOkValue()
+        {
+            var result = MakeSimpleOk();
+            Assert.AreEqual(SIMPLE_OKAY_VALUE_1, result.Expect("Some message"));
+        }
+
+        [Test]
+        public void AnError_Expect_ThrowsWithErrorMessage()
+        {
+            var result = MakeSimpleOk();
+            Assert.Throws(typeof(ExpectedAnOkException), () => result.Expect("Some message"));
+        }
     }
 }
