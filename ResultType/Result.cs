@@ -149,5 +149,10 @@ namespace ResultType
                 throw new AttemptedToUnwrapUncheckedResultException();
             }
         }
+
+        public List<IResult<T, E>> ToList()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

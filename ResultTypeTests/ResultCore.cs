@@ -278,5 +278,22 @@ namespace ResultTypeTest
                 Assert.AreEqual(SIMPLE_OKAY_VALUE_1, result.Unwrap());
             }
         }
+
+        [Test]
+        public void AnOk_ToList_ReturnsAListWithTheUnwrappedOk()
+        {
+            var result = MakeSimpleOk();
+            var asList = result.ToList();
+            Assert.AreEqual(SIMPLE_OKAY_VALUE_1, asList[0]);
+            Assert.AreEqual(1, asList.Count);
+        }
+
+        [Test]
+        public void AnError_ToList_ReturnsAnEmptyList()
+        {
+            var result = MakeSimpleError();
+            var asList = result.ToList();
+            Assert.AreEqual(0, asList.Count);
+        }
     }
 }
