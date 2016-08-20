@@ -233,5 +233,19 @@ namespace ResultTypeTest
         {
             Result<Object, string>.Error(null);
         }
+
+        [TestMethod]
+        public void ResultOkOrNull_PassedANull_UnwrapsToNull()
+        {
+            var result = Result<Object, string>.OkOrNull(null);
+            Assert.AreEqual(null, result.Unwrap());
+        }
+
+        [TestMethod]
+        public void ResultErrorOrNull_PassedANull_UnwrapsToNull()
+        {
+            var result = Result<string, Object>.ErrorOrNull(null);
+            Assert.AreEqual(null, result.UnwrapError());
+        }
     }
 }

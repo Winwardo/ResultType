@@ -16,19 +16,24 @@ namespace ResultType
         {
             if (value != null)
             {
-                return new Result<T, E>(value, default(E));
+                return Result<T, E>.OkOrNull(value);
             }
             else
             {
                 throw new ResultWasGivenNullException();
             }
+        }
+
+        public static Result<T, E> OkOrNull(T value)
+        {
+            return new Result<T, E>(value, default(E), true);
         }
 
         public static Result<T, E> Error(E error)
         {
             if (error != null)
             {
-                return new Result<T, E>(default(T), error);
+                return Result<T, E>.ErrorOrNull(error);
             }
             else
             {
@@ -36,19 +41,16 @@ namespace ResultType
             }
         }
 
-        private Result(T value, E error)
+        public static Result<T, E> ErrorOrNull(E error)
+        {
+            return new Result<T, E>(default(T), error, false);
+        }
+
+        private Result(T value, E error, bool isOk)
         {
             this.value = value;
             this.error = error;
-
-            if (value == null || error != null)
-            {
-                ok = false;
-            }
-            else
-            {
-                ok = true;
-            }
+            this.ok = isOk;
         }
 
         public bool IsError()
