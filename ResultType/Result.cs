@@ -183,7 +183,14 @@ namespace ResultType
 
         public T Expect(string message)
         {
-            throw new NotImplementedException();
+            if (ok)
+            {
+                return value;
+            }
+            else
+            {
+                throw new ExpectedAnOkException(message);
+            }
         }
     }
 }

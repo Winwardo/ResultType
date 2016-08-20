@@ -8,5 +8,11 @@ namespace ResultType
 {
     public class ExpectedAnOkException : Exception
     {
+        private ExpectedAnOkException() { }
+
+        public ExpectedAnOkException(string message)
+            : base(message)
+        {
+        }
     }
 }

@@ -352,7 +352,7 @@ namespace ResultTypeTest
         [Test]
         public void AnError_Expect_ThrowsWithErrorMessage()
         {
-            var result = MakeSimpleOk();
+            var result = MakeSimpleError();
             Assert.Throws(typeof(ExpectedAnOkException), () => result.Expect("Some message"));
         }
     }
