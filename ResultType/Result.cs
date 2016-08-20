@@ -97,7 +97,14 @@ namespace ResultType
 
         public IResult<U, E> Map<U>(Func<T, IResult<U, E>> ToCall)
         {
-            return ToCall(value);
+            if (ok)
+            {
+                return ToCall(value);
+            }
+            else
+            {
+                return Result<U, E>.Error(error);
+            }
         }
     }
 }

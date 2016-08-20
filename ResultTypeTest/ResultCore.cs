@@ -209,7 +209,7 @@ namespace ResultTypeTest
         {
             IResult<int, string> result = MakeSimpleError();
             IResult<int, string> mappedResult = result.Map(value => MakeSimpleOk());
-            Assert.AreEqual(SIMPLE_ERROR_MESSAGE_1, mappedResult.Unwrap());
+            Assert.AreEqual(SIMPLE_ERROR_MESSAGE_1, mappedResult.UnwrapError());
         }
 
         [TestMethod]
@@ -217,7 +217,7 @@ namespace ResultTypeTest
         {
             IResult<int, string> result = MakeSimpleError();
             IResult<int, string> mappedResult = result.Map(value => MakeSimpleError2());
-            Assert.AreEqual(SIMPLE_ERROR_MESSAGE_1, mappedResult.Unwrap());
+            Assert.AreEqual(SIMPLE_ERROR_MESSAGE_1, mappedResult.UnwrapError());
         }
     }
 }
