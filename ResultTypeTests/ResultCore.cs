@@ -322,6 +322,7 @@ namespace ResultTypeTest
         public void AnOk_IfThenElse_PredicateIsFalse_ContainsTheErrorValue()
         {
             var result = MakeSimpleOk();
+            var afterPred = result.IfThenElse((value) => false, SIMPLE_ERROR_MESSAGE_1);
             Assert.AreEqual(SIMPLE_ERROR_MESSAGE_1, afterPred.UnwrapErrorUnsafe());
         }
     }
