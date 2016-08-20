@@ -7,16 +7,66 @@ using ResultType;
 
 namespace Students
 {
-    public class Student
+    using PotentialStudentIResult = IResult<Students.PotentialStudent, Students.StudentError>;
+    using PotentialStudentResult = Result<Students.PotentialStudent, Students.StudentError>;
+    using StudentIResult = IResult<Students.Student, Students.StudentError>;
+
+    public abstract class AStudent
     {
-        public int age { get; private set; }
-        public int mark { get; private set; }
-        public Student(int age, int mark)
+        public int age { get; protected set; }
+        public int mark { get; protected set; }
+    }
+
+    public sealed class PotentialStudent : AStudent
+    {
+        public PotentialStudent(int age, int mark)
         {
             this.age = age;
             this.mark = mark;
         }
-    }
+    };
+
+    public sealed class Student : AStudent
+    {
+        public static StudentIResult MakeStudent(PotentialStudent student)
+        {
+            return PotentialStudentResult.Ok(student)
+                .AndThen(validateStudentAge)
+                .AndThen(validateStudentMark)
+                .Map(value => new Student(value));
+        }
+
+        private static PotentialStudentIResult validateStudentAge(PotentialStudent student)
+        {
+            if (student.age >= 18)
+            {
+                return PotentialStudentResult.Ok(student);
+            }
+            else
+            {
+                return PotentialStudentResult.Error(StudentError.NotOldEnough);
+            }
+        }
+
+        private static PotentialStudentIResult validateStudentMark(PotentialStudent student)
+        {
+            if (student.mark >= 50)
+            {
+                return PotentialStudentResult.Ok(student);
+            }
+            else
+            {
+                return PotentialStudentResult.Error(StudentError.MarkIsTooLow);
+            }
+        }
+
+        private Student(PotentialStudent student)
+        {
+            this.age = student.age;
+            this.mark = student.mark;
+        }
+    };
+
     public enum StudentError { NotOldEnough, MarkIsTooLow };
 }
 
@@ -25,7 +75,6 @@ namespace ResultTypeTests.Examples
     using NUnit.Framework;
     using Students;
     using StudentIResult = IResult<Students.Student, Students.StudentError>;
-    using StudentResult = Result<Students.Student, Students.StudentError>;
 
     [TestFixture]
     class ValidateStudent
@@ -33,56 +82,25 @@ namespace ResultTypeTests.Examples
         [Test]
         public void IntegrationValidateStudents()
         {
-            Student alex = new Student(20, 30);
-            Student tom = new Student(12, 70);
-            Student steve = new Student(12, 30);
-            Student topher = new Student(20, 70);
+            PotentialStudent alex = new PotentialStudent(20, 30);
+            PotentialStudent tom = new PotentialStudent(12, 70);
+            PotentialStudent steve = new PotentialStudent(12, 30);
+            PotentialStudent topher = new PotentialStudent(20, 70);
 
-            Assert.AreEqual(StudentError.MarkIsTooLow, validateStudent(alex).UnwrapErrorUnsafe());
-            Assert.AreEqual(StudentError.NotOldEnough, validateStudent(tom).UnwrapErrorUnsafe());
-            Assert.AreEqual(StudentError.NotOldEnough, validateStudent(steve).UnwrapErrorUnsafe());
-            Assert.AreEqual(topher, validateStudent(topher).UnwrapUnsafe());
+            Assert.AreEqual(StudentError.MarkIsTooLow, Student.MakeStudent(alex).UnwrapErrorUnsafe());
+            Assert.AreEqual(StudentError.NotOldEnough, Student.MakeStudent(tom).UnwrapErrorUnsafe());
+            Assert.AreEqual(StudentError.NotOldEnough, Student.MakeStudent(steve).UnwrapErrorUnsafe());
+            Assert.AreEqual(topher.age, Student.MakeStudent(topher).UnwrapUnsafe().age);
 
-            StudentIResult validatedTopherResult = validateStudent(topher);
+            StudentIResult validatedTopherResult = Student.MakeStudent(topher);
             if (validatedTopherResult.IsOk())
             {
                 Student validatedTopher = validatedTopherResult.Unwrap();
-                // Do interesting stuff
+                // Student must be valid
             }
             else
             {
                 // Topher isn't valid
-            }
-        }
-
-        private StudentIResult validateStudent(Student student)
-        {
-            return StudentResult.Ok(student)
-                .AndThen(validateStudentAge)
-                .AndThen(validateStudentMark);
-        }
-
-        private StudentIResult validateStudentAge(Student student)
-        {
-            if (student.age >= 18)
-            {
-                return StudentResult.Ok(student);
-            }
-            else
-            {
-                return StudentResult.Error(StudentError.NotOldEnough);
-            }
-        }
-
-        private StudentIResult validateStudentMark(Student student)
-        {
-            if (student.mark >= 50)
-            {
-                return StudentResult.Ok(student);
-            }
-            else
-            {
-                return StudentResult.Error(StudentError.MarkIsTooLow);
             }
         }
     }
