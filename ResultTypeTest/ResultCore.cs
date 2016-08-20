@@ -78,18 +78,18 @@ namespace ResultTypeTest
         }
 
         [TestMethod]
-        public void AnOk_Unwrap_UnwrapsFine()
+        public void AnOk_UnwrapUnsafe_UnwrapsFine()
         {
             var result = MakeSimpleOk();
-            Assert.AreEqual(SIMPLE_OKAY_VALUE_1, result.Unwrap());
+            Assert.AreEqual(SIMPLE_OKAY_VALUE_1, result.UnwrapUnsafe());
         }
 
         [TestMethod]
         [ExpectedException(typeof(AttemptedToUnwrapErrorException))]
-        public void AnError_Unwrap_Throws()
+        public void AnError_UnwrapUnsafe_Throws()
         {
             var result = MakeSimpleError();
-            result.Unwrap();
+            result.UnwrapUnsafe();
         }
 
         [TestMethod]
@@ -108,17 +108,17 @@ namespace ResultTypeTest
 
         [TestMethod]
         [ExpectedException(typeof(AttemptedToUnwrapErrorOfOkException))]
-        public void AnOk_UnwrapError_Throws()
+        public void AnOk_UnwrapErrorUnsafe_Throws()
         {
             var result = MakeSimpleOk();
-            result.UnwrapError();
+            result.UnwrapErrorUnsafe();
         }
 
         [TestMethod]
-        public void AnError_UnwrapError_ReturnsTheError()
+        public void AnError_UnwrapErrorUnsafe_ReturnsTheError()
         {
             var result = MakeSimpleError();
-            Assert.AreEqual(SIMPLE_ERROR_MESSAGE_1, result.UnwrapError());
+            Assert.AreEqual(SIMPLE_ERROR_MESSAGE_1, result.UnwrapErrorUnsafe());
         }
 
         [TestMethod]
@@ -126,7 +126,7 @@ namespace ResultTypeTest
         {
             var result = MakeSimpleOk();
             var andThennedResult = result.AndThen((value) => MakeSimpleOk2());
-            Assert.AreEqual(SIMPLE_OKAY_VALUE_2, andThennedResult.Unwrap());
+            Assert.AreEqual(SIMPLE_OKAY_VALUE_2, andThennedResult.UnwrapUnsafe());
         }
 
         [TestMethod]
@@ -134,7 +134,7 @@ namespace ResultTypeTest
         {
             var result = MakeSimpleOk();
             var andThennedResult = result.AndThen((value) => MakeSimpleError());
-            Assert.AreEqual(SIMPLE_ERROR_MESSAGE_1, andThennedResult.UnwrapError());
+            Assert.AreEqual(SIMPLE_ERROR_MESSAGE_1, andThennedResult.UnwrapErrorUnsafe());
         }
 
         [TestMethod]
@@ -142,8 +142,8 @@ namespace ResultTypeTest
         {
             var result = MakeSimpleOk();
             var andThennedResult = result.AndThen((value) => SimpleIntResult.Ok(value));
-            Assert.AreEqual(result.Unwrap(), andThennedResult.Unwrap());
-            Assert.AreEqual(SIMPLE_OKAY_VALUE_1, andThennedResult.Unwrap());
+            Assert.AreEqual(result.UnwrapUnsafe(), andThennedResult.UnwrapUnsafe());
+            Assert.AreEqual(SIMPLE_OKAY_VALUE_1, andThennedResult.UnwrapUnsafe());
         }
 
         [TestMethod]
@@ -151,7 +151,7 @@ namespace ResultTypeTest
         {
             var result = MakeSimpleError();
             var andThennedResult = result.AndThen((value) => MakeSimpleOk2());
-            Assert.AreEqual(SIMPLE_ERROR_MESSAGE_1, andThennedResult.UnwrapError());
+            Assert.AreEqual(SIMPLE_ERROR_MESSAGE_1, andThennedResult.UnwrapErrorUnsafe());
         }
 
         [TestMethod]
@@ -159,7 +159,7 @@ namespace ResultTypeTest
         {
             var result = MakeSimpleError();
             var andThennedResult = result.AndThen((value) => MakeSimpleError2());
-            Assert.AreEqual(SIMPLE_ERROR_MESSAGE_1, andThennedResult.UnwrapError());
+            Assert.AreEqual(SIMPLE_ERROR_MESSAGE_1, andThennedResult.UnwrapErrorUnsafe());
         }
 
         [TestMethod]
@@ -185,7 +185,7 @@ namespace ResultTypeTest
         {
             var result = MakeSimpleOk();
             var mappedResult = result.Map<string>((value) => MakeSimpleStringOk());
-            Assert.AreEqual(SIMPLE_OKAY_STRING_1, mappedResult.Unwrap());
+            Assert.AreEqual(SIMPLE_OKAY_STRING_1, mappedResult.UnwrapUnsafe());
         }
 
         [TestMethod]
@@ -193,7 +193,7 @@ namespace ResultTypeTest
         {
             IResult<int, string> result = MakeSimpleOk();
             IResult<int, string> mappedResult = result.Map(value => MakeSimpleOk2());
-            Assert.AreEqual(SIMPLE_OKAY_VALUE_2, mappedResult.Unwrap());
+            Assert.AreEqual(SIMPLE_OKAY_VALUE_2, mappedResult.UnwrapUnsafe());
         }
 
         [TestMethod]
@@ -201,7 +201,7 @@ namespace ResultTypeTest
         {
             IResult<int, string> result = MakeSimpleOk();
             IResult<string, string> mappedResult = result.Map<string>(value => MakeSimpleStringOk());
-            Assert.AreEqual(SIMPLE_OKAY_STRING_1, mappedResult.Unwrap());
+            Assert.AreEqual(SIMPLE_OKAY_STRING_1, mappedResult.UnwrapUnsafe());
         }
 
         [TestMethod]
@@ -209,7 +209,7 @@ namespace ResultTypeTest
         {
             IResult<int, string> result = MakeSimpleError();
             IResult<int, string> mappedResult = result.Map(value => MakeSimpleOk());
-            Assert.AreEqual(SIMPLE_ERROR_MESSAGE_1, mappedResult.UnwrapError());
+            Assert.AreEqual(SIMPLE_ERROR_MESSAGE_1, mappedResult.UnwrapErrorUnsafe());
         }
 
         [TestMethod]
@@ -217,7 +217,7 @@ namespace ResultTypeTest
         {
             IResult<int, string> result = MakeSimpleError();
             IResult<int, string> mappedResult = result.Map(value => MakeSimpleError2());
-            Assert.AreEqual(SIMPLE_ERROR_MESSAGE_1, mappedResult.UnwrapError());
+            Assert.AreEqual(SIMPLE_ERROR_MESSAGE_1, mappedResult.UnwrapErrorUnsafe());
         }
 
         [TestMethod]
@@ -238,14 +238,14 @@ namespace ResultTypeTest
         public void ResultOkOrNull_PassedANull_UnwrapsToNull()
         {
             var result = Result<Object, string>.OkOrNull(null);
-            Assert.AreEqual(null, result.Unwrap());
+            Assert.AreEqual(null, result.UnwrapUnsafe());
         }
 
         [TestMethod]
         public void ResultErrorOrNull_PassedANull_UnwrapsToNull()
         {
             var result = Result<string, Object>.ErrorOrNull(null);
-            Assert.AreEqual(null, result.UnwrapError());
+            Assert.AreEqual(null, result.UnwrapErrorUnsafe());
         }
     }
 }

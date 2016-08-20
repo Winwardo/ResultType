@@ -63,7 +63,7 @@ namespace ResultType
             return ok;
         }
 
-        public T Unwrap()
+        public T UnwrapUnsafe()
         {
             if (ok)
             {
@@ -87,7 +87,7 @@ namespace ResultType
             }
         }
 
-        public E UnwrapError()
+        public E UnwrapErrorUnsafe()
         {
             if (ok)
             {
