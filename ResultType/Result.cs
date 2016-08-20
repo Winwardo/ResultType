@@ -164,7 +164,11 @@ namespace ResultType
 
         public IResult<T, E> IfThenElse(Predicate<T> predicate, E error)
         {
-            throw new NotImplementedException();
+            if (predicate(value))
+            {
+                return Result<T, E>.Ok(value);
+            }
+            return null;
         }
     }
 }
