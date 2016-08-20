@@ -192,5 +192,15 @@ namespace ResultType
                 throw new ExpectedAnOkException(message);
             }
         }
+
+        public IResult<U, E> And<U>(IResult<U, E> other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IResult<U, E> Or<U>(IResult<U, E> other)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

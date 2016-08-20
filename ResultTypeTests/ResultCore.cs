@@ -355,5 +355,37 @@ namespace ResultTypeTest
             var result = MakeSimpleError();
             Assert.Throws(typeof(ExpectedAnOkException), () => result.Expect("Some message"));
         }
+
+        [Test]
+        public void AnOk_And_AnOk_ContainsTheSecondOk()
+        {
+            var result = MakeSimpleOk();
+            var andResult = result.And(MakeSimpleStringOk());
+            Assert.AreEqual(SIMPLE_OKAY_STRING_1, andResult.UnwrapUnsafe());
+        }
+
+        [Test]
+        public void AnOk_And_AnError_ContainsTheError()
+        {
+            var result = MakeSimpleOk();
+            var andResult = result.And(MakeSimpleError());
+            Assert.AreEqual(SIMPLE_ERROR_MESSAGE_1, andResult.UnwrapErrorUnsafe());
+        }
+
+        [Test]
+        public void AnError_And_AnOk_ContainsTheError()
+        {
+            var result = MakeSimpleError();
+            var andResult = result.And(MakeSimpleStringOk());
+            Assert.AreEqual(SIMPLE_ERROR_MESSAGE_1, andResult.UnwrapErrorUnsafe());
+        }
+
+        [Test]
+        public void AnError_And_AnError_ContainsTheFirstError()
+        {
+            var result = MakeSimpleError();
+            var andResult = result.And(MakeSimpleError2());
+            Assert.AreEqual(SIMPLE_ERROR_MESSAGE_1, andResult.UnwrapErrorUnsafe());
+        }
     }
 }

@@ -19,6 +19,9 @@ namespace ResultType
 
         IResult<T, Error> IfThenElse(Predicate<T> predicate, Error error);
 
+        IResult<U, Error> And<U>(IResult<U, Error> other);
+        IResult<U, Error> Or<U>(IResult<U, Error> other);
+
         T UnwrapUnsafe();
         Error UnwrapErrorUnsafe();
     }
