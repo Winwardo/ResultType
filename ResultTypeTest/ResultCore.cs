@@ -9,29 +9,29 @@ namespace ResultTypeTest
     [TestClass]
     public class ResultCore
     {
-        private static int SIMPLE_OKAY_VALUE = 5;
-        private static int SIMPLE_OKAY_OTHER_VALUE = SIMPLE_OKAY_VALUE + 1;
-        private static string SIMPLE_ERROR_MESSAGE = "some error";
-        private static string SIMPLE_OTHER_ERROR_MESSAGE = "some other error";
+        private static int SIMPLE_OKAY_VALUE_1 = 5;
+        private static int SIMPLE_OKAY_VALUE_2 = SIMPLE_OKAY_VALUE_1 + 1;
+        private static string SIMPLE_ERROR_MESSAGE_1 = "some error";
+        private static string SIMPLE_ERROR_MESSAGE_2 = "some other error";
 
         private SimpleResult makeSimpleOk()
         {
-            return SimpleResult.Ok(SIMPLE_OKAY_VALUE);
+            return SimpleResult.Ok(SIMPLE_OKAY_VALUE_1);
         }
 
-        private SimpleResult makeAnotherSimpleOk()
+        private SimpleResult makeSimpleOk2()
         {
-            return SimpleResult.Ok(SIMPLE_OKAY_VALUE + 1);
+            return SimpleResult.Ok(SIMPLE_OKAY_VALUE_1 + 1);
         }
 
         private SimpleResult makeSimpleError()
         {
-            return SimpleResult.Error(SIMPLE_ERROR_MESSAGE);
+            return SimpleResult.Error(SIMPLE_ERROR_MESSAGE_1);
         }
 
-        private SimpleResult makeAnotherSimpleError()
+        private SimpleResult makeSimpleError2()
         {
-            return SimpleResult.Error(SIMPLE_OTHER_ERROR_MESSAGE);
+            return SimpleResult.Error(SIMPLE_ERROR_MESSAGE_2);
         }
 
         [TestMethod]
@@ -66,7 +66,7 @@ namespace ResultTypeTest
         public void AnOk_Unwrap_UnwrapsFine()
         {
             var result = makeSimpleOk();
-            Assert.AreEqual(SIMPLE_OKAY_VALUE, result.unwrap());
+            Assert.AreEqual(SIMPLE_OKAY_VALUE_1, result.unwrap());
         }
 
         [TestMethod]
@@ -81,14 +81,14 @@ namespace ResultTypeTest
         public void AnOk_UnwrapOr_ReturnsTheOkayValue()
         {
             var result = makeSimpleOk();
-            Assert.AreEqual(SIMPLE_OKAY_VALUE, result.unwrapOr(SIMPLE_OKAY_OTHER_VALUE));
+            Assert.AreEqual(SIMPLE_OKAY_VALUE_1, result.unwrapOr(SIMPLE_OKAY_VALUE_2));
         }
 
         [TestMethod]
         public void AnError_UnwrapOr_ReturnsTheOtherValue()
         {
             var result = makeSimpleError();
-            Assert.AreEqual(SIMPLE_OKAY_OTHER_VALUE, result.unwrapOr(SIMPLE_OKAY_OTHER_VALUE));
+            Assert.AreEqual(SIMPLE_OKAY_VALUE_2, result.unwrapOr(SIMPLE_OKAY_VALUE_2));
         }
 
         [TestMethod]
@@ -103,15 +103,15 @@ namespace ResultTypeTest
         public void AnError_UnwrapError_ReturnsTheError()
         {
             var result = makeSimpleError();
-            Assert.AreEqual(SIMPLE_ERROR_MESSAGE, result.unwrapError());
+            Assert.AreEqual(SIMPLE_ERROR_MESSAGE_1, result.unwrapError());
         }
 
         [TestMethod]
         public void AnOk_AndThen_WithOk_ReturnsNewOk()
         {
             var result = makeSimpleOk();
-            var andThennedResult = result.andThen((value) => makeAnotherSimpleOk());
-            Assert.AreEqual(SIMPLE_OKAY_OTHER_VALUE, andThennedResult.unwrap());
+            var andThennedResult = result.andThen((value) => makeSimpleOk2());
+            Assert.AreEqual(SIMPLE_OKAY_VALUE_2, andThennedResult.unwrap());
         }
 
         [TestMethod]
@@ -119,23 +119,23 @@ namespace ResultTypeTest
         {
             var result = makeSimpleOk();
             var andThennedResult = result.andThen((value) => makeSimpleError());
-            Assert.AreEqual(SIMPLE_ERROR_MESSAGE, andThennedResult.unwrapError());
+            Assert.AreEqual(SIMPLE_ERROR_MESSAGE_1, andThennedResult.unwrapError());
         }
 
         [TestMethod]
         public void AnError_AndThen_WithOk_ReturnsError()
         {
             var result = makeSimpleError();
-            var andThennedResult = result.andThen((value) => makeAnotherSimpleOk());
-            Assert.AreEqual(SIMPLE_ERROR_MESSAGE, andThennedResult.unwrapError());
+            var andThennedResult = result.andThen((value) => makeSimpleOk2());
+            Assert.AreEqual(SIMPLE_ERROR_MESSAGE_1, andThennedResult.unwrapError());
         }
 
         [TestMethod]
         public void AnError_AndThen_WithAnotherError_ReturnsTheFirstError()
         {
             var result = makeSimpleError();
-            var andThennedResult = result.andThen((value) => makeAnotherSimpleError());
-            Assert.AreEqual(SIMPLE_ERROR_MESSAGE, andThennedResult.unwrapError());
+            var andThennedResult = result.andThen((value) => makeSimpleError2());
+            Assert.AreEqual(SIMPLE_ERROR_MESSAGE_1, andThennedResult.unwrapError());
         }
 
         [TestMethod]
@@ -143,7 +143,7 @@ namespace ResultTypeTest
         {
             var capturedValue = 0;
             var result = makeSimpleOk();
-            var andThennedResult = result.andThen((value) => { capturedValue++; return makeAnotherSimpleOk(); });
+            var andThennedResult = result.andThen((value) => { capturedValue++; return makeSimpleOk2(); });
             Assert.AreEqual(1, capturedValue);
         }
 
@@ -152,7 +152,7 @@ namespace ResultTypeTest
         {
             var capturedValue = 0;
             var result = makeSimpleError();
-            var andThennedResult = result.andThen((value) => { capturedValue++; return makeAnotherSimpleOk(); });
+            var andThennedResult = result.andThen((value) => { capturedValue++; return makeSimpleOk2(); });
             Assert.AreEqual(0, capturedValue);
         }
     }
