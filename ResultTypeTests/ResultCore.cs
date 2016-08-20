@@ -110,6 +110,7 @@ namespace ResultTypeTest
         public void AnOk_UnwrapErrorUnsafe_Throws()
         {
             var result = MakeSimpleOk();
+            Assert.Throws(typeof(AttemptedToUnwrapErrorOfOkException), delegate { result.UnwrapErrorUnsafe(); });
         }
 
         [Test]
