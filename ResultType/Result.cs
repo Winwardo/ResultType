@@ -83,11 +83,11 @@ namespace ResultType
             }
         }
 
-        public IResult<T, E> AndThen(Func<T, IResult<T, E>> toCall)
+        public IResult<T, E> AndThen(Func<T, IResult<T, E>> ToCall)
         {
             if (ok)
             {
-                return toCall(value);
+                return ToCall(value);
             }
             else
             {
@@ -97,7 +97,7 @@ namespace ResultType
 
         public IResult<U, E> Map<U>(Func<T, IResult<U, E>> ToCall)
         {
-            throw new NotImplementedException();
+            return ToCall(value);
         }
     }
 }
