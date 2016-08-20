@@ -94,5 +94,10 @@ namespace ResultType
                 return Result<T, E>.Error(error);
             }
         }
+
+        public IResult<U, E> Map<U>(Func<T, IResult<U, E>> ToCall)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

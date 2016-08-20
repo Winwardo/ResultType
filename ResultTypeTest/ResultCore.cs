@@ -4,34 +4,47 @@ using ResultType;
 
 namespace ResultTypeTest
 {
-    using SimpleResult = Result<int, string>;
+    using SimpleIntResult = Result<int, string>;
+    using SimpleStringResult = Result<string, string>;
 
     [TestClass]
     public class ResultCore
     {
         private static int SIMPLE_OKAY_VALUE_1 = 5;
         private static int SIMPLE_OKAY_VALUE_2 = SIMPLE_OKAY_VALUE_1 + 1;
+        private static string SIMPLE_OKAY_STRING_1 = "some ok value";
+        private static string SIMPLE_OKAY_STRING_2 = "some other ok value";
         private static string SIMPLE_ERROR_MESSAGE_1 = "some error";
         private static string SIMPLE_ERROR_MESSAGE_2 = "some other error";
 
-        private SimpleResult MakeSimpleOk()
+        private SimpleIntResult MakeSimpleOk()
         {
-            return SimpleResult.Ok(SIMPLE_OKAY_VALUE_1);
+            return SimpleIntResult.Ok(SIMPLE_OKAY_VALUE_1);
         }
 
-        private SimpleResult MakeSimpleOk2()
+        private SimpleIntResult MakeSimpleOk2()
         {
-            return SimpleResult.Ok(SIMPLE_OKAY_VALUE_2);
+            return SimpleIntResult.Ok(SIMPLE_OKAY_VALUE_2);
         }
 
-        private SimpleResult MakeSimpleError()
+        private SimpleStringResult MakeSimpleStringOk()
         {
-            return SimpleResult.Error(SIMPLE_ERROR_MESSAGE_1);
+            return SimpleStringResult.Ok(SIMPLE_OKAY_STRING_1);
         }
 
-        private SimpleResult MakeSimpleError2()
+        private SimpleStringResult MakeOtherSimpleStringOk()
         {
-            return SimpleResult.Error(SIMPLE_ERROR_MESSAGE_2);
+            return SimpleStringResult.Ok(SIMPLE_OKAY_STRING_1);
+        }
+
+        private SimpleIntResult MakeSimpleError()
+        {
+            return SimpleIntResult.Error(SIMPLE_ERROR_MESSAGE_1);
+        }
+
+        private SimpleIntResult MakeSimpleError2()
+        {
+            return SimpleIntResult.Error(SIMPLE_ERROR_MESSAGE_2);
         }
 
         [TestMethod]
@@ -126,7 +139,7 @@ namespace ResultTypeTest
         public void AnOk_AndThen_WithTheIdentityFunction_ReturnsTheOriginalOk()
         {
             var result = MakeSimpleOk();
-            var andThennedResult = result.AndThen((value) => SimpleResult.Ok(value));
+            var andThennedResult = result.AndThen((value) => SimpleIntResult.Ok(value));
             Assert.AreEqual(result.Unwrap(), andThennedResult.Unwrap());
             Assert.AreEqual(SIMPLE_OKAY_VALUE_1, andThennedResult.Unwrap());
         }
@@ -163,6 +176,14 @@ namespace ResultTypeTest
             var result = MakeSimpleError();
             var andThennedResult = result.AndThen((value) => { capturedValue++; return MakeSimpleOk2(); });
             Assert.AreEqual(0, capturedValue);
+        }
+
+        [TestMethod]
+        public void AnOk_Mapped_ToAnOkOfNewType_ReturnsTheNewOk()
+        {
+            var result = MakeSimpleOk();
+            var mappedResult = result.Map<string>((value) => MakeSimpleStringOk());
+            Assert.AreEqual(SIMPLE_OKAY_STRING_1, mappedResult.Unwrap());
         }
     }
 }
