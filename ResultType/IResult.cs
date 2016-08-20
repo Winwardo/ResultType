@@ -8,14 +8,14 @@ namespace ResultType
 {
     public interface IResult<T, Error>
     {
-        bool isOk();
-        bool isError();
+        bool IsOk();
+        bool IsError();
 
-        T unwrapOr(T other);
-        Error unwrapError();
+        T UnwrapOr(T other);
+        Error UnwrapError();
 
-        IResult<T, Error> andThen(Func<T, IResult<T, Error>> toCall);
+        IResult<T, Error> AndThen(Func<T, IResult<T, Error>> toCall);
 
-        T unwrap();
+        T Unwrap();
     }
 }

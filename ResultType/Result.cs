@@ -37,17 +37,17 @@ namespace ResultType
             }
         }
 
-        public bool isError()
+        public bool IsError()
         {
             return !ok;
         }
 
-        public bool isOk()
+        public bool IsOk()
         {
             return ok;
         }
 
-        public T unwrap()
+        public T Unwrap()
         {
             if (ok)
             {
@@ -59,7 +59,7 @@ namespace ResultType
             }
         }
 
-        public T unwrapOr(T other)
+        public T UnwrapOr(T other)
         {
             if (ok)
             {
@@ -71,7 +71,7 @@ namespace ResultType
             }
         }
 
-        public E unwrapError()
+        public E UnwrapError()
         {
             if (ok)
             {
@@ -83,7 +83,7 @@ namespace ResultType
             }
         }
 
-        public IResult<T, E> andThen(Func<T, IResult<T, E>> toCall)
+        public IResult<T, E> AndThen(Func<T, IResult<T, E>> toCall)
         {
             if (ok)
             {
