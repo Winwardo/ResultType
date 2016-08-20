@@ -42,6 +42,17 @@ namespace ResultTypeTests.Examples
             Assert.AreEqual(StudentError.NotOldEnough, validateStudent(tom).UnwrapErrorUnsafe());
             Assert.AreEqual(StudentError.NotOldEnough, validateStudent(steve).UnwrapErrorUnsafe());
             Assert.AreEqual(topher, validateStudent(topher).UnwrapUnsafe());
+
+            StudentIResult validatedTopherResult = validateStudent(topher);
+            if (validatedTopherResult.IsOk())
+            {
+                Student validatedTopher = validatedTopherResult.Unwrap();
+                // Do interesting stuff
+            }
+            else
+            {
+                // Topher isn't valid
+            }
         }
 
         private StudentIResult validateStudent(Student student)
