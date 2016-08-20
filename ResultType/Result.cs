@@ -150,9 +150,16 @@ namespace ResultType
             }
         }
 
-        public List<IResult<T, E>> ToList()
+        public List<T> ToList()
         {
-            throw new NotImplementedException();
+            if (ok)
+            {
+                return new List<T> { value };
+            }
+            else
+            {
+                return new List<T>();
+            }
         }
     }
 }
